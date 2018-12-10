@@ -1,0 +1,135 @@
+html,
+body {
+  margin: 0;
+  background: #000;
+}
+
+@mixin fit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.fit {
+  @include fit;
+}
+
+.media-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+preso-presentation {
+  @include fit;
+}
+
+preso-slide {
+  background: linear-gradient(to bottom, #C33764, #1d2671);
+  background-color: #000;
+  perspective: 1000px;
+  --dimmer: rgba(0,0,0,0.0);
+}
+
+.sunny {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), linear-gradient(to bottom, #22c1c3, #fdbb2d);
+}
+
+.ocean {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), linear-gradient(to bottom, #000046, #1CB5E0)
+}
+
+.day {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), linear-gradient(to bottom, #36d1dc, #5b86e5);
+}
+
+.swamp {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), linear-gradient(to top, #43c6ac, #191654);
+}
+
+.dawn {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), linear-gradient(to top, #3B4371, #F3904F);
+}
+
+.love {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), linear-gradient(to top, #89253e, #3a6186);
+}
+
+.white {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), #fff;
+}
+
+.nyan {
+  background: #0f4d8f;
+}
+
+.blueprint {
+  background-image: linear-gradient(to top, var(--dimmer), var(--dimmer)), url('imgs/graph-tile.png'), radial-gradient(circle, #08d, #002b46);
+}
+
+.code-outer {
+  background: rgba(0, 0, 0, 0.75);
+  font-size: 38px;
+  border: 1px solid transparent;
+  margin: 44px 0;
+  border-width: 55px 100px;
+  border-right-width: 0;
+  line-height: 1.5;
+  position: relative;
+}
+
+.vertically-center {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
+.vertically-center-this {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  margin: 0;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  margin: 0;
+}
+
+.code-massive {
+  font-size: 60px;
+}
+
+.code-medium {
+  font-size: 50px;
+}
+
+.next-btn {
+  position: absolute;
+  right: 0;
+  width: 20%;
+  top: 0;
+  bottom: 0;
+}
+
+.prev-btn {
+  position: absolute;
+  left: 0;
+  width: 20%;
+  top: 0;
+  bottom: 0;
+}
+
+preso-presentation {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+  -webkit-tap-highlight-color: transparent;
+}
