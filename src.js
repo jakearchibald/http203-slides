@@ -9,6 +9,7 @@ import { fadeIn, fadeOut, sizeOut, slideFrom } from 'preso/src/utils/anims';
 import { findText, getRelativeBoundingClientRect, wait } from 'preso/src/utils/dom';
 import { easeInOutQuint, easeInOutQuad, easeInOutQuart, easeOutQuart } from 'preso/src/utils/css-ease';
 import 'preso/src/presentation/slide/timeline';
+import LoopingBg from './LoopingBg';
 
 import hljs from 'highlight.js/lib/highlight.js';
 import css2 from 'highlight.js/lib/languages/css.js';
@@ -24,427 +25,942 @@ const notes = (...args) => presentation.notes.set(...args);
 document.body.append(presentation);
 document.head.append(html`<style>${css}</style>`);
 
-presentation.slide('', async slide => {
-  slide.classList.add('sunny');
+function titleSlide(presentation, title) {
+  presentation.slide(title, async slide => {
+    slide.classList.add('sunny');
+    await slide.next();
+    const bg = new LoopingBg();
+    slide.append(bg);
+    bg.addTitle(title);
+  });
+}
 
-  await slide.next();
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 56px">
-    ${code = html`<preso-code code-lang="js">
-      function Car(doors) {
-        Vehicle.call(this, { doors: doors, wheels: 4 });
-      }
-
-      Car.prototype = (function() {
-        function tmp() {}
-        tmp.prototype = Vehicle.prototype;
-        return new tmp();
-      })();
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('sunny');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 56px">
-    ${code = html`<preso-code code-lang="js">
-      class Car extends Vehicle {
-        constructor(doors) {
-          super({ doors, wheels: 4 });
-        }
-      }
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-
-presentation.transition(slideFromRight());
+// START
 
 presentation.slide('', async slide => {
   slide.classList.add('ocean');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 45px">
-    ${code = html`<preso-code code-lang="js">
-      function spin(options) {
-        if (!options) options = {};
-        var duration = ('duration' in options) ?
-          options.duration : 1000;
-        var direction = ('direction' in options) ?
-          options.direction : 'clockwise';
-        var easing = ('easing' in options) ?
-          options.easing : 'ease-out';
-        var iterations = ('iterations' in options) ?
-          options.iterations : 1;
-        // …
-      }
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('ocean');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 45px">
-    ${code = html`<preso-code code-lang="js">
-      function spin({
-        duration = 1000,
-        direction = 'clockwise',
-        easing = 'ease-out',
-        iterations = 1,
-      } = {}) {
-        // …
-      }
-
-      function spin(options = {}) {
-        const {
-          duration = 1000,
-          direction = 'clockwise',
-          easing = 'ease-out',
-          iterations = 1,
-        } = options;
-        // …
-      }
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-  code.show(1, 8);
   await slide.next();
-  code.show(1, 18);
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('display: contents;');
 });
 
-presentation.transition(slideFromRight());
-
 presentation.slide('', async slide => {
-  slide.classList.add('day');
-  
+  slide.classList.add('ocean', 'vertically-center');
+
   let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 76px">
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 80px">
     ${code = html`<preso-code code-lang="css">
       .whatever {
-        width: 100px;
-        height: 100px;
-      }
-
-      .whatever {
-        --size: 100px;
-        width: var(--size);
-        height: var(--size);
+        display: contents;
       }
     </preso-code>`}
   </div>`;
   slide.append(codeOuter);
-  code.show(1, 4);
+});
+
+
+titleSlide(presentation, 'Reporting Observer');
+presentation.slide('Reporting Observer', async slide => {
+  slide.classList.add('sunny');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 46px">
+    ${code = html`<preso-code code-lang="javascript">
+const observer = new ReportingObserver((reports, observer) => {
+  for (const report of reports) {
+    // report.type is 'deprecation' or 'intervention'
+    // ... send to analytics or something
+  }
+}});
+
+observer.observe();
+`}
+  `);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
   await slide.next();
-  code.show(1, 10);
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Scroll snap');
 });
 
-presentation.transition(slideFromRight());
-
 presentation.slide('', async slide => {
-  slide.classList.add('dawn');
-  
+  slide.classList.add('ocean', 'vertically-center');
+
   let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 60px">
-    ${code = html`<preso-code code-lang="js">
-      ul.addEventListener('click', function(event) {
-        let li = event.target;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 53px">
+    ${code = html`<preso-code code-lang="css">
+      .gallery {
+        scroll-snap-type: x mandatory;
+        overflow-x: scroll;
+        display: flex;
+      }
 
-        while (li && li.tagName !== 'li') {
-          li = li.parentNode;
-        }
-
-        if (!li) return;
-        // …
-      });
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('dawn');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 60px">
-    ${code = html`<preso-code code-lang="js">
-      ul.addEventListener('click', (event) => {
-        const li = event.target.closest('li');
-        if (!li) return;
-        // …
-      });
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('love');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 55px">
-    ${code = html`<preso-code code-lang="js">
-      input = input.replace(/\+/g, ' ');
-      var result = {};
-      input.split('&').forEach(function(item) {
-        var keyVal = item.split('=');
-        result[keyVal[0]] = (keyVal.length > 1) ?
-          decodeURIComponent(keyVal.slice(1).join('=')) :
-          null;
-      });
-      console.log(result.foo);
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('love');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 55px">
-    ${code = html`<preso-code code-lang="js">
-      const result = new URLSearchParams(input);
-      console.log(result.get('foo'));
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('sunny');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 52px">
-    ${code = html`<preso-code code-lang="js">
-      var reader = new FileReader();
-      reader.onload = function() {
-        var buffer = reader.result;
-        // …
-      };
-      reader.onerror = function() {
-        // …
-      };
-      reader.readAsArrayBuffer(blob);
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('sunny');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 52px">
-    ${code = html`<preso-code code-lang="js">
-      try {
-        const buffer = await new Response(blob).arrayBuffer();
-        // …
-      } catch (err) {
-        // …
+      .gallery img {
+        scroll-snap-align: center;
       }
     </preso-code>`}
   </div>`;
+
   slide.append(codeOuter);
 });
 
-presentation.transition(slideFromRight());
+
+
+titleSlide(presentation, 'Site Isolation');
+
+
 
 presentation.slide('', async slide => {
   slide.classList.add('ocean');
-  
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Named Workers');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
   let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 33px">
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 53px">
     ${code = html`<preso-code code-lang="js">
-      const style = document.createElement('style');
-      const id = anim + Math.random();
-      style.textContent = \`
-        @keyframe \$\{id} {
-          from { transform: translateY(\$\{from}px); }
-          to   { transform: translateY(\$\{to}px); }
-        }
-      \`;
-      document.head.append(style);
-      el.style.animation = \`\$\{id} \$\{duration}ms \$\{easing} forwards\`;
-      const finished = new Promise((resolve, reject) => {
-        const listener = (event) => {
-          if (event.target !== el) return;
-          if (event.type === 'animationcancel') {
-            reject(new DOMException('Animation cancelled', 'AbortError'));
-          } else {
-            resolve();
-          }
-          el.removeEventListener('animationend', listener);
-          el.removeEventListener('animationcancel', listener);
-        };
-        el.addEventListener('animationend', listener);
-        el.addEventListener('animationcancel', listener);
-      });
+      const worker = new Worker(url, { name: 'whatever' });
     </preso-code>`}
   </div>`;
+
   slide.append(codeOuter);
 });
 
-presentation.transition(slideFromRight());
 
-presentation.slide('', async slide => {
-  slide.classList.add('ocean');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 55px">
-    ${code = html`<preso-code code-lang="js">
-      const { finished } = el.animate([
-        { transform: \`translateY(\$\{from}px)\` },
-        { transform: \`translateY(\$\{to}px)\` },
-      ], {
-        duration, easing,
-        fill: 'forwards',
-      });
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
 
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
+titleSlide(presentation, 'Payment Handler');
+presentation.slide('Payment Handler', async slide => {
   slide.classList.add('sunny');
 
-  await slide.next();
-  
+  let outerCode;
   let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 40px">
-    ${code = html`<preso-code code-lang="js">
-      navigator.serviceWorker.ready.then(async (swReg) => {
-        const urls = ['/podcast.mp3', '/artwork.jpg'];
-        const bgFetch = await swReg.backgroundFetch.fetch('my-fetch', urls, {
-          title: 'Epsisode 5',
-          icons: [{
-            sizes: '300x300',
-            src: '/podcast-icon.png',
-            type: 'image/png',
-          }],
-          downloadTotal: 60 * 1024 * 1024,
-        });
-      });
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+const request = new PaymentRequest([{
+  supportedMethods: 'https://surmas.totally.legit.bank'
+}], {
+  total: {
+    label: 'total',
+    amount: { value: '10', currency: 'USD' }
+  }
+});
+`}
+  `);
 });
 
-presentation.transition(slideFromRight());
+presentation.slide('Payment Handler', async slide => {
+  slide.classList.add('sunny');
+  let outerCode, code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">`);
+  outerCode.append(code = html`<preso-code code-lang="javascript">
+const registration =
+  await navigator.serviceWorker.register('service-worker.js');
+registration.paymentManager.instruments.set(
+  "https://surmas.totally.legit.bank",
+  {
+    name: 'Surma’s Totally Legit Bank',
+    method: 'surmas.totally.legit.bank'
+  }
+);
+`)
+});
+
+presentation.slide('Payment Handler', async slide => {
+  slide.classList.add('sunny');
+  let outerCode, code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">`);
+  outerCode.append(code = html`<preso-code code-lang="javascript">
+self.addEventListener('paymentrequest', e => {
+  // ...
+});
+`)
+});
+
 
 presentation.slide('', async slide => {
-  slide.classList.add('ocean');
-  
+  slide.classList.add('ocean-conic');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Conic gradients');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean-conic', 'vertically-center');
+
   let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 50px">
-    ${code = html`<preso-code code-lang="js">
-      bgFetch.addEventListener('progress', () => {
-        if (!bgFetch.downloadTotal) return;
-        const percent = Math.round(
-          bgFetch.downloaded / bgFetch.downloadTotal * 100
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 53px">
+    ${code = html`<preso-code code-lang="css">
+      .ocean-conic {
+        background-image: conic-gradient(
+          from 34deg,
+          #000046, #1CB5E0, #000046, #1CB5E0, #000046
         );
-        console.log(\`Download progress: \$\{percent}%\`);
-      });
+      }
     </preso-code>`}
   </div>`;
+
   slide.append(codeOuter);
 });
 
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('day');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 50px">
-    ${code = html`<preso-code code-lang="js">
-      bgFetch.match('/podcast.mp3').then(async (record) => {
-        if (!record) {
-          console.log('No record found');
-          return;
-        }
-
-        console.log("Here's the request", record.request);
-        const response = await record.responseReady;
-        console.log("And here's the response", response);
-      });
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
-
-presentation.slide('', async slide => {
-  slide.classList.add('dawn');
-  
-  let code;
-  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 50px">
-    ${code = html`<preso-code code-lang="js">
-      addEventListener('backgroundfetchsuccess', (event) => {
-        const bgFetch = event.registration;
-
-        event.waitUntil(async function() {
-          const cache = await caches.open('downloads');
-          const records = await bgFetch.matchAll();
-          const promises = records.map(async (record) => {
-            const response = await record.responseReady;
-            await cache.put(record.request, response);
-          });
-          await Promise.all(promises);
-          event.updateUI({ title: 'Podcast ready to listen' });
-        }());
-      });
-    </preso-code>`}
-  </div>`;
-  slide.append(codeOuter);
-});
-
-presentation.transition(slideFromRight());
+titleSlide(presentation, 'AV1 Decoding');
 
 presentation.slide('', async slide => {
   slide.classList.add('love');
-  
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('End of part 1');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Async clipboard');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 59px">
+    ${code = html`<preso-code code-lang="js">
+      button.addEventListener('click', () => {
+        const input = document.createElement('input');
+        document.body.appendChild(input);
+        input.value = text;
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+      });
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+});
+
+presentation.transition(slideFromRight());
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 54px">
+    ${code = html`<preso-code code-lang="js">
+      button.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(text);
+      });
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+
+  await slide.next();
+
+  const codeOuter2 = html`<div class="code-outer" fade-in style="font-size: 54px">
+    ${code = html`<preso-code code-lang="js">
+      button.addEventListener('click', async () => {
+        const text = await navigator.clipboard.readText();
+        console.log(text);
+      });
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter2);
+});
+
+
+
+titleSlide(presentation, 'Typed OM');
+
+presentation.slide('Typed OM', async slide => {
+  slide.classList.add('sunny');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="javascript">
+styleMap = someElement.computedStyleMap()
+  // <=> getComputedStyles(someElement)
+styleMap = someElement.attributeStyleMap
+  // <=> someElement.style
+
+styleMap.get("opacity") // == {value: 1, unit: "number"}
+styleMap.get("top") // == {value: 0, unit: "px"}
+styleMap.get("margin-left") // == {value: 10, unit: "percent"}
+</preso-code>`}
+  </div>`);
+  code.show(1,4);
+  await slide.next();
+  code.show(1, 99);
+});
+
+presentation.slide('Typed OM', async slide => {
+  slide.classList.add('sunny');
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="javascript">
+      newValue = CSSNumericValue.parse("10px");
+      newValue = new CSSUnitValue(10, "px")
+      styleMap.set("top", newValue);
+
+      styleMap.set(
+        "margin-left",
+        newValue.add(new CSSUnitValue(5, "px"))
+      ); // => 15px!
+    `}
+  </div>`);
+  outerCode.append();
+  code.show(1, 3);
+  await slide.next();
+  code.show(1, 8);
+});
+
+presentation.slide('Typed OM', async slide => {
+  slide.classList.add('sunny');
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="javascript">
+      styleMap.set(
+        "margin-left",
+        CSSNumericValue("10px")
+          .add(new CSSUnitValue(5, "percent"))
+      );
+      /*
+      => {
+        operator: "sum",
+        values: [
+          {value: 10, unit: "px"},
+          {value: 5, unit: "percent"}
+        ]
+      }
+      */
+    `}
+  </div>`);
+  code.show(1, 5);
+  await slide.next();
+  code.show(1, 99);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('updateViaCache');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 44px">
+    ${code = html`<preso-code code-lang="js">
+      navigator.serviceWorker.register('/service-worker.js', {
+        updateViaCache: 'none',
+      });
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+});
+
+
+
+titleSlide(presentation, 'Desktop PWAs');
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('bitmaprenderer');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 54px">
+    ${code = html`<preso-code code-lang="js">
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('bitmaprenderer');
+      const image = await createImageBitmap(imageBlob);
+      context.transferFromImageBitmap(image);
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+});
+
+
+
+titleSlide(presentation, 'Web Locks');
+
+presentation.slide('Web Locks', async slide => {
+  slide.classList.add('sunny', 'vertically-center');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+await do_something_without_lock();
+
+await navigator.locks.request('my_resource', async lock => {
+   await do_something();
+   await do_something_else();
+});
+
+await do_something_else_without_lock();
+`}
+  `);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Feature-Policy');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 53px">
+    ${code = html`<preso-code code-lang="plain">
+      Feature-Policy: geolocation 'none'
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+
+  await slide.next();
+
+  const codeOuter2 = html`<div class="code-outer" fade-in style="font-size: 53px">
+    ${code = html`<preso-code code-lang="html">${`
+      <iframe src="…" allow="geolocation 'none'"></iframe>
+    `}</preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter2);
+});
+
+
+
+titleSlide(presentation, 'CSS Paint API');
+
+presentation.slide('CSS Paint API', async slide => {
+  slide.classList.add('sunny');
+
+  let code;
+  slide.append(html`<div class="code-outer code-medium" fade-in style="font-size: 45px">
+    ${code = html`<preso-code code-lang="html">
+&lt;!doctype html>
+&lt;style>
+  main {
+    border-image: paint(squircle-corners);
+  }
+&lt;/style>
+&lt;main>&lt;/main>
+&lt;script>
+CSS.paintWorklet.addModule('squircle-corners.js');
+&lt;/script>
+</preso-code>`}
+  </div>`);
+
+  await slide.next();
+
+  slide.append(html`<div class="code-outer code-medium" fade-in style="font-size: 45px">
+    ${code = html`<preso-code code-lang="javascript">
+registerPaint('squircle-corners', class {
+  paint(ctx, geometry, properties) {
+    // ... just like &lt;canvas>
+  }
+});
+</preso-code>`}
+  </div>`);
+
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Web Auth PublicKeyCredential');
+});
+
+
+
+titleSlide(presentation, 'toggleAttribute');
+presentation.slide('toggleAttribute', async slide => {
+  slide.classList.add('sunny', 'vertically-center');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+someElement.toggleAttribute('hidden');
+    `}
+  `);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('OffscreenCanvas');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 53px">
+    ${code = html`<preso-code code-lang="js">
+      const canvas = new OffscreenCanvas(256, 256);
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+});
+
+
+
+titleSlide(presentation, 'Focus Management API');
+
+presentation.slide('Focus Management API', async slide => {
+  slide.classList.add('sunny', 'vertically-center');
+
+  let code;
+  slide.append(html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+someElement.focus();
+someElement.focus({preventScroll: true});
+</preso-code>`}
+  </div>`);
+
+  code.show(1,1);
+  await slide.next();
+  code.show(2,2);
+  code.type(`{preventScroll: true}`);
+
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Sensors');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+
+  await slide.next();
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 44px">
+    ${code = html`<preso-code code-lang="js">
+      const accelerometer = new Accelerometer();
+      const linearAccelerationSensor = new LinearAccelerationSensor();
+      const gravitySensor = new GravitySensor();
+      const gyroscope = new Gyroscope();
+      const absoluteOrientationSensor = new AbsoluteOrientationSensor();
+      const relativeOrientationSensor = new RelativeOrientationSensor();
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+
+  await slide.next();
+
+  const codeOuter2 = html`<div class="code-outer" fade-in style="font-size: 44px">
+    ${code = html`<preso-code code-lang="js">
+      sensor.addEventListener('reading', () => {
+        // …
+      });
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter2);
+});
+
+
+
+titleSlide(presentation, 'BigInt');
+presentation.slide('BigInt', async slide => {
+  slide.classList.add('sunny');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+const bigNumber = 123456789012345678901234567890n;
+typeof 123n; // → 'bigint'
+    `}
+  `);
+  code.show(1,1);
+  await slide.next();
+  code.show(1,2);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('Lifecycle API');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 53px">
+    ${code = html`<preso-code code-lang="js">
+      document.addEventListener('freeze', (event) => {
+        // The page is now frozen.
+      });
+
+      document.addEventListener('resume', (event) => {
+        // The page has been unfrozen.
+      });
+
+      if (document.wasDiscarded) {
+        // Page was previously discarded by the
+        // browser while in a hidden tab.
+      }
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+});
+
+
+
+titleSlide(presentation, 'Server Timings');
+presentation.slide('Server Timings', async slide => {
+  slide.classList.add('sunny');
+
+  let code;
+  slide.append(html`<div class="code-outer code-medium" fade-in style="font-size: 43px">
+    ${code = html`<preso-code code-lang="plain">
+Server-Timing: missedCache
+Server-Timing: missedCache, cpu;dur=2.4
+Server-Timing: missedCache, cpu;dur=2.4;desc="Processing time"
+</preso-code>`}
+  </div>`);
+
+  code.show(1,1);
+  await slide.next();
+
+  code.show(2,2);
+  code.type(`, cpu;dur=2.4`);
+  await slide.next();
+
+  code.show(3,3);
+  code.type(`;desc="Processing time"`);
+  await slide.next();
+
+  slide.append(html`<div class="code-outer code-medium" fade-in style="font-size: 43px">
+    ${code = html`<preso-code code-lang="javascript">
+let entries = performance.getEntriesByType('resource');
+for(const entry of entries) {
+  entry.serverTiming[0]
+  // == {name: "missedCache", duration: 0.0 description: ""}
+  entry.serverTiming[1]
+  // == {name: "cpu", duration: 2.4, description: "Processing time"}
+}
+</preso-code>`}
+  </div>`);
+  code.show(1, 1);
+  await slide.next();
+  code.show(1, 2);
+  await slide.next();
+  code.show(1, 99);
+
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('trimStart trimEnd');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 54px">
+    ${code = html`<preso-code code-lang="js">
+      ' hello world '.trim();      // 'hello world'
+      ' hello world '.trimLeft();  // 'hello world '
+      ' hello world '.trimRight(); // ' hello world'
+      ' hello world '.trimStart(); // 'hello world '
+      ' hello world '.trimEnd();   // ' hello world'
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+
+  code.show(1, 1);
+  await slide.next();
+  code.show(1, 3);
+  await slide.next();
+  code.show(1, 5);
+});
+
+
+
+titleSlide(presentation, 'import.meta');
+
+presentation.slide('import.meta', async slide => {
+  slide.classList.add('sunny');
+
+  let code;
+  slide.append(html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+import.meta.url;
+
+document.currentScript.src;
+</preso-code>`}
+  </div>`);
+
+  code.show(1, 1);
+  await slide.next();
+  code.show(1, 3);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('RegEx named capture groups');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="js">
+      const pattern = /(?&lt;year>\d{4})-(?&lt;month>\d{2})-(?&lt;day>\d{2})/;
+      const result = pattern.exec('2018-12-25');
+      const { year, month, day } = result.groups;
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter);
+  await slide.next();
+
+  const codeOuter2 = html`<div class="code-outer" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="js">
+      const transformed = '2018-12-25'.replace(
+        pattern,
+        '$&lt;day>/$&lt;month>/$&lt;year>'
+      );
+      // "25/12/2018"
+    </preso-code>`}
+  </div>`;
+
+  slide.append(codeOuter2);
+});
+
+
+
+titleSlide(presentation, 'Relative Time Format');
+presentation.slide('Relative Time Format', async slide => {
+  slide.classList.add('sunny');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+const rtf = new Intl.RelativeTimeFormat('en');
+
+rtf.format(3.14, 'second');
+// → 'in 3.14 seconds'
+
+rtf.format(-15, 'minute');
+// → '15 minutes ago'
+`}
+  `);
+  code.show(1,1);
+  await slide.next();
+  code.show(1, 99);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('ResizeObserver');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
   let code;
   const codeOuter = html`<div class="code-outer" fade-in style="font-size: 50px">
     ${code = html`<preso-code code-lang="js">
-      addEventListener('backgroundfetchclick', (event) => {
-        const bgFetch = event.registration;
-
-        if (bgFetch.result === 'success') {
-          clients.openWindow('/latest-podcasts');
-        } else {
-          clients.openWindow('/download-progress');
+      const observer = new ResizeObserver((changes) => {
+        for (const { target, contentRect } of changes) {
+          // …
         }
+      });
+
+      observer.observe(element);
+    </preso-code>`}
+  </div>`;
+  slide.append(codeOuter);
+});
+
+
+
+titleSlide(presentation, 'Audio Worklet');
+presentation.slide('Audio Worklet', async slide => {
+  slide.classList.add('sunny');
+
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="javascript">
+const audioCtx = new AudioContext();
+const track = audioCtx.createMediaElementSource(audioElement);
+const gainNode = audioCtx.createGain();
+// Manipulate gainNode.gain.value ...
+const panner = new StereoPannerNode(audioCtx, {pan: 0});
+// Manipulate panner.pan.value ...
+track
+  .connect(gainNode)
+  .connect(panner)
+  .connect(audioCtx.destination);
+</preso-code>`}
+  </div>`);
+});
+
+presentation.slide('Audio Worklet', async slide => {
+  slide.classList.add('sunny');
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in style="font-size: 47px">
+    ${code = html`<preso-code code-lang="javascript">
+      // app.js
+      const audioCtx = new AudioContext();
+      await audioCtx.audioWorklet.addModule('surm-node.js');
+      const track = audioCtx.createMediaElementSource(audioElement);
+      const surmNode = new AudioWorkletNode(context, 'surm-node');
+      track
+        .connect(surmNode)
+        .connect(audioCtx.destination);
+    </preso-code>`}
+  </div>`);
+  await slide.next();
+  outerCode.append(code = html`<preso-code code-lang="javascript">
+// surm-node.js
+class SurmNode extends AudioWorkletProcessor {
+  process(inputs, outputs, parameters) {
+    // ...
+  }
+}
+
+registerProcessor('gain-processor', GainProcessor);
+`);
+});
+
+
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean');
+  await slide.next();
+  const bg = new LoopingBg();
+  slide.append(bg);
+  bg.addTitle('CacheMode');
+});
+
+presentation.slide('', async slide => {
+  slide.classList.add('ocean', 'vertically-center');
+
+  let code;
+  const codeOuter = html`<div class="code-outer" fade-in style="font-size: 56px">
+    ${code = html`<preso-code code-lang="js">
+      const response = await fetch(url, {
+        cache: 'reload',
+        // or 'default'
+        // or 'no-store'
+        // or 'no-cache'
+        // or 'force-cache'
+        // or 'only-if-cached'
       });
     </preso-code>`}
   </div>`;
   slide.append(codeOuter);
 });
+
+
+
+titleSlide(presentation, 'Class fields');
+presentation.slide('Class fields', async slide => {
+  slide.classList.add('sunny');
+  let outerCode;
+  let code;
+  slide.append(outerCode = html`<div class="code-outer code-medium" fade-in>
+    ${code = html`<preso-code code-lang="javascript">
+class MyClass {
+  x = 4;
+}
+`}
+  `);
+
+});
+
+
+// END
 
 document.addEventListener('click', () => {
   document.documentElement.requestFullscreen();

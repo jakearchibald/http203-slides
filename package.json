@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "rollup --config; node server.js"
+    "start": "rollup --config; node server.js",
+    "watch": "node server.js & rollup --config --watch && fg"
   },
   "dependencies": {
     "express": "^4.16.3",
